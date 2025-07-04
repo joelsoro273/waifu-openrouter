@@ -7,7 +7,7 @@ app = Flask(__name__)
 OPENROUTER_API_KEY = "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"
 
 
-OPENROUTER_URL ="https://openrouter.ai/api/v1/chat/completions"
+OPENROUTER_URL = https://openrouter.ai/api/v1/chat/completions
 
 HEADERS = {
     "Authorization": "Bearer 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",
