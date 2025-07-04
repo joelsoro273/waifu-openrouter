@@ -10,7 +10,8 @@ OPENROUTER_API_KEY = "sk-or-v1-2c3be7350070024d1e16bd3404e9272127d9afd38cfacbd1f
 OPENROUTER_URL ="https://openrouter.ai/api/v1/chat/completions"
 
 HEADERS = {
-    "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+    "Authorization": "Bearer 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"
+
     "Content-Type": "application/json",
 }
 
