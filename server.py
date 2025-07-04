@@ -38,7 +38,7 @@ user_message},
     try:
         response = requests.post(OPENROUTER_URL,
 headers=HEADERS, json=payload)
-        response.raise_for_statuts()
+        response.raise_for_status()
         result = response.json()
         ai_reply = result["choices"][0] ["message"]["content"]
 
