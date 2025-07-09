@@ -16,38 +16,38 @@ def waifu():
     if not message:
         return jsonify({"error": "Aucun message reçu"}), 400
 
-   headers = {
-    "Authorization": f"Bearer {os.getenv(openrouter_api_key}",
-    "Content-Type": "application/json"
-}
+    headers = {
+        "Authorization": f"Bearer {os.getenv(openrouter_api_key}",
+        "Content-Type": "application/json"
+    }
 
     payload = {
         "model": "openchat/openchat-7b:free",
         "messages": [
             {"role": "user", "content": message}
-         ]
-      }
+        ]
+    }
   
     try:
         response = requests.post(
 
 "https://openrouter.ai/api/v1/chat/completions",
             headers=headers,
-            json=payload,
-            timeout=30
-          )
-          response.raise_for_status()
-
-          completion = response.json()
-["choices"][0]["message"]["content"]
-
-        video_url =f"https://dummyvideo.com/generate?text={completion[:20]}"
+            json=payload
+        )
+        response.raise_for_status()
+        result = response.json()
+        ai_reply = result["choices"][0]["message"]["content"]
+        return jsonify({"response": ai_reply})
         
         return jsonify({
-           "reply": completion,
-           "video_url": video_url
+           "response": ai_reply,
+           "video_url": "https://dummyvideo.com/generate?text={completion[:20]}"
         })
          
     except request.exceptions.RequestException as e:
-       return jsonify({"error": str(e)}, 500
+        return jsonify({"error": str(e)}), 500
+
+if __name__ == "__main__":
+    app.run()
 
