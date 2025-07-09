@@ -1,53 +1,53 @@
 from flask import Flask, request, jsonify
 import requests
-
-from dotenv import load_dotenv
 import os
+from dotenv import load_dotenv
 
 load_dotenv()
+openrouter_api_key = os.getenv("OPENROUTER_API_KEY")
 
 app = Flask(__name__)
-
-OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
-
-HEADERS = {
-    "Authorization": f"Bearer {os.getenv('OPENROUTER_API_KEY')}",
-     "Content-Type": "application/json",
-}
 
 @app.route("/waifu",  methods=["POST"])
 def waifu():
     data = request.get_json()
-    user_message = data.get("message","")
-  
-    if not user_message:
-      return jsonify({"error":
-"Message vide"}), 400
+    message = data.get("message")
 
-     # Message envoyé a l'IA
+    if not message:
+        return jsonify({"error": "Aucun message reçu"}), 400
+
+   headers = {
+    "Authorization": f"Bearer {os.getenv(openrouter_api_key}",
+    "Content-Type": "application/json"
+}
+
     payload = {
-         "model": "mistral", # ou "gpt-3.5-turbo", "llama-3" etc.
-         "messages": [
-             {"role": "system",
-"content": "Tu es une waifu mignonne et gentille qui répond avec un style animé."},
-
-             {"role": "user", "content":
-user_message},
-        ]
-    }
-
+        "model": "openchat/openchat-7b:free",
+        "messages": [
+            {"role": "user", "content": message}
+         ]
+      }
+  
     try:
-        response = requests.post(OPENROUTER_URL,
-headers=HEADERS, json=payload)
-        response.raise_for_status()
-        result = response.json()
-        ai_reply = result["choices"][0] ["message"]["content"]
+        response = requests.post(
 
-        return jsonify({"response": ai_reply})
+"https://openrouter.ai/api/v1/chat/completions",
+            headers=headers,
+            json=payload,
+            timeout=30
+          )
+          response.raise_for_status()
 
-    except Exception as e:
-        return jsonify({"error":
-str(e)}), 500
+          completion = response.json()
+["choices"][0]["message"]["content"]
 
-if __name__ =="__main__":
-  app.run()
+        video_url =f"https://dummyvideo.com/generate?text={completion[:20]}"
+        
+        return jsonify({
+           "reply": completion,
+           "video_url": video_url
+        })
+         
+    except request.exceptions.RequestException as e:
+       return jsonify({"error": str(e)}, 500
+
