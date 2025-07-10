@@ -1,9 +1,11 @@
+
 from flask import Flask, request, jsonify
 import requests
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
+
 openrouter_api_key = os.getenv("OPENROUTER_API_KEY")
 
 app = Flask(__name__)
@@ -17,7 +19,7 @@ def waifu():
         return jsonify({"error": "Aucun message reçu"}), 400
 
     headers = {
-        "Authorization": f"Bearer {os.getenv(openrouter_api_key}",
+        "Authorization": f"Bearer {os.getenv(openrouter_api_key)}",
         "Content-Type": "application/json"
     }
 
