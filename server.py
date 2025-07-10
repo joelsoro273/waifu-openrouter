@@ -4,35 +4,36 @@ import requests
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
-openrouter_api_key = os.getenv("OPENROUTER_API_KEY")
-
-   headers = {
-        "Authorization": f"Bearer {os.getenv(openrouter_api_key)}",
-        "Content-Type": "application/json"
-    }
+load_dotenv() 
 
 app = Flask(__name__)
 
 @app.route("/waifu",  methods=["POST"])
 def waifu():
-    data = request.get_json()
-    message = data.get("message")
+    try:
+        data = request.get_json()
+        message = data.get("message")
 
-    if not message:
-        return jsonify({"error": "Aucun message reçu"}), 400
+        if not message:
+            return jsonify({"error": "Aucun message reçu"}), 400
 
-    payload = {
-        "model": "openchat/openchat-7b:free",
-        "messages": [
-            {"role": "user", "content": message}
-        ]
+        openrouter_api_key = os.getenv("OPENROUTER_API_KEY")
+
+        headers = {
+            "Authorization": f"Bearer {os.getenv(openrouter_api_key)}",
+            "Content-Type": "application/json"
+    }
+
+        payload = {
+            "model": "openchat/openchat-7b:free",
+            "messages": [
+                {"role": "user", "content": message}
+            ]
     }
   
-    try:
         response = requests.post(
 
-"https://openrouter.ai/api/v1/chat/completions",
+            "https://openrouter.ai/api/v1/chat/completions",
             headers=headers,
             json=payload
         )
