@@ -47,7 +47,7 @@ def waifu():
            "video_url": "https://dummyvideo.com/generate?text={completion[:20]}"
         })
          
-    except request.exceptions.RequestException as e:
+    except requests.exceptions.RequestException as e:
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
