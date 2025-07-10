@@ -5,8 +5,12 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-
 openrouter_api_key = os.getenv("OPENROUTER_API_KEY")
+
+   headers = {
+        "Authorization": f"Bearer {os.getenv(openrouter_api_key)}",
+        "Content-Type": "application/json"
+    }
 
 app = Flask(__name__)
 
@@ -17,11 +21,6 @@ def waifu():
 
     if not message:
         return jsonify({"error": "Aucun message reçu"}), 400
-
-    headers = {
-        "Authorization": f"Bearer {os.getenv(openrouter_api_key)}",
-        "Content-Type": "application/json"
-    }
 
     payload = {
         "model": "openchat/openchat-7b:free",
