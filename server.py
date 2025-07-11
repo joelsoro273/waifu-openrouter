@@ -5,7 +5,6 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv() 
-
 app = Flask(__name__)
 
 @app.route("/waifu",  methods=["POST"])
@@ -19,8 +18,11 @@ def waifu():
 
         openrouter_api_key = os.getenv("OPENROUTER_API_KEY")
 
+         if not openrouter_api_key:
+             return jsonify({"error": "Clé API non trouvée"}), 500
+
         headers = {
-            "Authorization": f"Bearer {os.getenv(openrouter_api_key)}",
+            "Authorization": f"Bearer {openrouter_api_key}",
             "Content-Type": "application/json"
     }
 
@@ -42,11 +44,6 @@ def waifu():
         ai_reply = result["choices"][0]["message"]["content"]
         return jsonify({"response": ai_reply})
         
-        return jsonify({
-           "response": ai_reply,
-           "video_url": "https://dummyvideo.com/generate?text={completion[:20]}"
-        })
-         
     except requests.exceptions.RequestException as e:
         return jsonify({"error": str(e)}), 500
 
