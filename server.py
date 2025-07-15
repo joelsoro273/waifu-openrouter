@@ -44,14 +44,15 @@ def waifu():
 
         reply = response.json() ["choices"][0]["message"]["content"]
         
-        "video_url": f"https://fake.video.generator/video?text={reply}"
-        return jsonify({"video_url":video_url})
+        video_url = f"https://fake.video.generator/video?text={reply}"
+
+        return jsonify({"video_url": video_url}), 200
  
     except requests.exceptions.RequestException as e:
         return jsonify({"error": str(e)}), 500
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-if name == "main":
-    app.run()
+if __name__ == "__main"__:
+    app.run(debug=True)
 
