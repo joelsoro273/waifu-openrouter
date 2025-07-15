@@ -18,20 +18,17 @@ def waifu():
 
         openrouter_api_key = os.getenv("OPENROUTER_API_KEY")
 
-         if not openrouter_api_key:
-             return jsonify({"error": "Clé API non trouvée"}), 500
-
         headers = {
             "Authorization": f"Bearer {openrouter_api_key}",
             "Content-Type": "application/json"
-    }
+        }
 
         payload = {
             "model": "openchat/openchat-7b:free",
             "messages": [
                 {"role": "user", "content": message}
             ]
-    }
+        }
   
         response = requests.post(
 
@@ -44,6 +41,11 @@ def waifu():
         ai_reply = result["choices"][0]["message"]["content"]
         return jsonify({"response": ai_reply})
         
+        return jsonify({
+            "response": ai_reply,
+            "video_url": f"https://dummyvideo.com/generate?text={ai_reply[:20]}"
+        })
+         
     except requests.exceptions.RequestException as e:
         return jsonify({"error": str(e)}), 500
 
