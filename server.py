@@ -11,12 +11,14 @@ app = Flask(__name__)
 def waifu():
     try:
         data = request.get_json()
-        message = data.get("message")
+        message = data.get("message","")
 
         if not message:
             return jsonify({"error": "Aucun message reçu"}), 400
 
         openrouter_api_key = os.getenv("OPENROUTER_API_KEY")
+        if not openrouter_api_key:
+             return jsonify({"error": "Clé API OpenRouter manquante".}), 500
 
         headers = {
             "Authorization": f"Bearer {openrouter_api_key}",
@@ -24,31 +26,32 @@ def waifu():
         }
 
         payload = {
-            "model": "openchat/openchat-7b:free",
+            "model": "ministralai/ministral-7b-instruct",
             "messages": [
-                {"role": "user", "content": message}
+                {
+                    "role": "user",
+                    "content": message
+                }
             ]
         }
-  
-        response = requests.post(
 
+        response = requests.post(
             "https://openrouter.ai/api/v1/chat/completions",
             headers=headers,
             json=payload
         )
         response.raise_for_status()
-        result = response.json()
-        ai_reply = result["choices"][0]["message"]["content"]
-        return jsonify({"response": ai_reply})
+
+        reply = response.json() ["choices"][0]["message"]["content]
         
-        return jsonify({
-            "response": ai_reply,
-            "video_url": f"https://dummyvideo.com/generate?text={ai_reply[:20]}"
-        })
-         
+        "video_url": f"https://fake.video.generator/video?text={reply}"
+        return jsonify({"video_url":video_url})
+ 
     except requests.exceptions.RequestException as e:
         return jsonify({"error": str(e)}), 500
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
-if __name__ == "__main__":
-    app.run(debug=True)
+if name == "main":
+    app.run()
 
