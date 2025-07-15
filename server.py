@@ -42,7 +42,7 @@ def waifu():
         )
         response.raise_for_status()
 
-        reply = response.json() ["choices"][0]["message"]["content]
+        reply = response.json() ["choices"][0]["message"]["content"]
         
         "video_url": f"https://fake.video.generator/video?text={reply}"
         return jsonify({"video_url":video_url})
