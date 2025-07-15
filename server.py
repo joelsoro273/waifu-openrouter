@@ -18,7 +18,7 @@ def waifu():
 
         openrouter_api_key = os.getenv("OPENROUTER_API_KEY")
         if not openrouter_api_key:
-             return jsonify({"error": "Clé API OpenRouter manquante".}), 500
+             return jsonify({"error": "Clé API OpenRouter manquante"}), 500
 
         headers = {
             "Authorization": f"Bearer {openrouter_api_key}",
