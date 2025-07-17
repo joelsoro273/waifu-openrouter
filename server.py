@@ -31,7 +31,7 @@ def waifu_reply():
         }
         payload = {
             "model": "openai/gpt-3.5-turbo",
-            "message": [
+            "messages": [
                 {"role": "user", "content": message}
             ]
         }
