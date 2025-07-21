@@ -19,7 +19,7 @@ def home():
 
 @app.route("/waifus", methods=["GET"])
 def get_waifus():
-    return jsonify([{"name: w["name"], "avatar": w["avatar"]} for w in WAIFUS])
+    return jsonify([{"name": w["name"], "avatar": w["avatar"]} for w in WAIFUS])
 
 @app.route("/waifu", methods=["POST"])
 def waifu_reply():
