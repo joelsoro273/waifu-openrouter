@@ -2,11 +2,15 @@
 import os
 import json
 import requests
+import uuid
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from gtts import gTTS
  
 app = Flask(__name__)
 CORS(app)
+
+os.makedirs("static/audio", exist_ok=True)
 
 with open("waifus.json", "r", encoding="utf-8") as f:
     WAIFUS = json.load(f)
@@ -58,10 +62,18 @@ def waifu_reply():
 
         reply = response.json() ["choices"][0]["message"]["content"]
 
+        tts = gTTS(text=reply, lang="fr")
+        filename = f"{uuid.uuid4().hex}.mp3"
+        audio_path = os.path.join("static/audio", filename)
+        tts.save(audio_path)
+
+        audio_url = request.host_url.rstrip("/") + "/" + audio_path
+
         return jsonify({
             "reply": reply,
             "avatar": waifu["avatar"],
-            "video_url": f"https://fake.video.generator/video?text={reply}"
+            "video_url": f"https://fake.video.generator/video?text={reply}",
+            "audio_url": audio_url
         })
 
     except Exception as e:
